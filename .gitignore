@@ -9,6 +9,8 @@ lerna-debug.log*
 
 node_modules/
 node/
+FullStackOpen/Part1/courseinfo/node_modules/
+FullStackOpen/Part1/courseinfo/node/
 dist
 dist-ssr
 *.local
