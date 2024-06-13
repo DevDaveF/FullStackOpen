@@ -5,8 +5,14 @@ const RandomAnecdote =(size,state) => {
   return state(randomNum)
 }
 
+const Tally = (index,votes,state) => {
+  const copy = [...votes]
+  copy[index] += 1
+  return state(copy)
+}
+
 const Button = (click) =>{
-  return <button onClick={click.clicked}>Next anecdote</button>
+  return <button onClick={click.clicked}>{click.text}</button>
 }
 
 const App = () => {
@@ -20,14 +26,17 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
-  const [selected, setSelected] = useState(0)
   const max = anecdotes.length
+  const [selected, setSelected] = useState(0)
+  const [vote, setVote] =useState(new Uint8Array(max))
+ 
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <Button clicked={() => RandomAnecdote(max,setSelected)}/>
+      <p>has {vote[selected]} votes</p>
+      <Button clicked={() => Tally(selected,vote,setVote)} text="Vote"/>
+      <Button clicked={() => RandomAnecdote(max,setSelected)} text="Next Anecdote"/>
     </div>
   )
 }
