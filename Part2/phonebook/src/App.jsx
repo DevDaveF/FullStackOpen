@@ -3,9 +3,10 @@ import { useState } from 'react'
 const App = () => {
   // tracks state of phonebook entries used to track people in phonebook
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas',
-      number: '040-1234567'
-     }
+    { name: 'Arto Hellas', number: '040-1234567', id: 1},
+    { name: 'Ada Lovelace', number : '39-44-5323532', id: 2},
+    { name: 'Jack Schneider', number : '66-31-653421', id: 3},
+    { name: 'John Smith', number : '973-951-8844', id: 4},
   ]) 
   // used to track the state of the name input field and add a new person to the phonebook
   const [newName, setNewName] = useState('add a new person...')
@@ -13,6 +14,8 @@ const App = () => {
   // used to track the state of the phone number input field and add a new phone number to the persons
   //array
   const [newNum, setNewNum] = useState('add a phone number...')
+
+  const [nameFilter, setNameFilter] = useState('')
 
   // At the trigger of the form onSubmit event the addperson Function activates 
   // It is used to check if a name already exists in the phonebook'persons' state 
@@ -22,7 +25,8 @@ const App = () => {
     //At the trigger of the form submit event personObject is set to current newName state value
     const personObject = {
       name: newName,
-      number: newNum
+      number: newNum,
+      id: persons.length +1
      }
     
     // variable that takes in a value if a name is found in the persons state array searching for
@@ -49,7 +53,6 @@ const App = () => {
   //the value in this input field is stored in the newName useState and is set on every change via
   //setNewName
   const handleAddPerson = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
@@ -57,16 +60,26 @@ const App = () => {
   //the value in this input field is stored in the newNum useState and is set on every change via
   //setNewNum
   const handleAddNumber = (event) => {
-    console.log(event.target.value)
     setNewNum(event.target.value)
   }
+
   //App returns the HTML form with an updated list of names added to the phonebook stored in persons
   //useState array as objects
   //using the .map method each object in the persons useState array is iterated through and displayed
   //as a list item in HTML
+  console.log('filter value = ', nameFilter)
+
   return (
     <div>
       <h2>Phonebook</h2>
+        <div>
+          filter shown with: <input
+          value = {nameFilter}
+          onChange={(event) => {setNameFilter(event.target.value) 
+          }}
+          />
+        </div>
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input 
@@ -85,7 +98,12 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
         <ul>
-          {persons.map(add => <li key={add.name}>{add.name} {add.number}</li>)}
+          {persons
+            .filter((item) => {
+              return nameFilter.toLowerCase() ==='' 
+                ? item 
+                : item.name.toLowerCase().includes(nameFilter)
+          } ).map(add => <li key={add.id}>{add.name} {add.number}</li>)}
         </ul> 
     </div>
   )
