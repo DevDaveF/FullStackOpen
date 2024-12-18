@@ -10,8 +10,8 @@ const PersonForm = (props) => {
         </div>
         <div>
           number: <input 
-            value={props.value2}
-            onChange={props.onChange2}/>
+            value={props.value_2}
+            onChange={props.onChange_2}/>
         </div>
         <div>
           <button type="submit">add</button>
