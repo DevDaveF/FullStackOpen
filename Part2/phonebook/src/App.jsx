@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import PersonForm from './PersonForm'
+import Filter from './Filter'
+import AllPeople from './AllPeople'
 
 const App = () => {
   // tracks state of phonebook entries used to track people in phonebook
@@ -49,6 +52,9 @@ const App = () => {
       
   }
 
+  const handleFilter = (event) => {
+    setNameFilter(event.target.value)
+  }
   //This function logs every change in value of the name input field using the onChange event
   //the value in this input field is stored in the newName useState and is set on every change via
   //setNewName
@@ -72,39 +78,22 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-        <div>
-          filter shown with: <input
-          value = {nameFilter}
-          onChange={(event) => {setNameFilter(event.target.value) 
-          }}
-          />
-        </div>
+
+        <Filter value = {nameFilter} onChange = {handleFilter}/>
+
       <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input 
-            value={newName} 
-            onChange={handleAddPerson}
+            <PersonForm 
+              onSubmit={addPerson} 
+              value={newName} 
+              onChange={handleAddPerson}
+              value2 = {newNum}
+              onChange2={handleAddNumber}
             />
-        </div>
-        <div>
-          number: <input 
-            value={newNum}
-            onChange={handleAddNumber}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
       <h2>Numbers</h2>
-        <ul>
-          {persons
-            .filter((item) => {
-              return nameFilter.toLowerCase() ==='' 
-                ? item 
-                : item.name.toLowerCase().includes(nameFilter)
-          } ).map(add => <li key={add.id}>{add.name} {add.number}</li>)}
-        </ul> 
+
+        <AllPeople persons = {persons} nameFilter = {nameFilter}/>
+        
     </div>
   )
 }
