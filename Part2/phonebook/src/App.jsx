@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios' 
 import PersonForm from './PersonForm'
 import Filter from './Filter'
 import AllPeople from './AllPeople'
+import repositoryService from './services/repository.js'
 
 const App = () => {
 
@@ -15,15 +15,12 @@ const App = () => {
   const [nameFilter, setNameFilter] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    repositoryService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -39,8 +36,8 @@ const App = () => {
       window.alert(`${newName} is already added to phonebook`)
     }
     else{
-      axios
-      .post('http://localhost:3001/persons', personObject)
+      repositoryService
+      .create(personObject)
       .then(response => {
         console.log(response)
         setPersons(persons.concat(response.data))
