@@ -3,6 +3,7 @@ import PersonForm from './PersonForm'
 import Filter from './Filter'
 import AllPeople from './AllPeople'
 import repositoryService from './services/repository.js'
+import removePerson from './services/DeletePeople.js'
 
 const App = () => {
 
@@ -33,7 +34,7 @@ const App = () => {
     const checkName = persons.find(({name}) => name.toLowerCase() === personObject.name.toLowerCase())
 
     if(checkName){
-      window.alert(`${newName} is already added to phonebook`)
+      window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
     }
     else{
       repositoryService
@@ -78,7 +79,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-        <AllPeople persons = {persons} nameFilter = {nameFilter}/>
+        <AllPeople persons = {persons} nameFilter = {nameFilter} setPersons = {setPersons} useEffect = {useEffect}/>
 
     </div>
   )
