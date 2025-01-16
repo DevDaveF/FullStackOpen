@@ -3,7 +3,6 @@ import PersonForm from './PersonForm'
 import Filter from './Filter'
 import AllPeople from './AllPeople'
 import repositoryService from './services/repository.js'
-import removePerson from './services/DeletePeople.js'
 
 const App = () => {
 
@@ -33,8 +32,18 @@ const App = () => {
 
     const checkName = persons.find(({name}) => name.toLowerCase() === personObject.name.toLowerCase())
 
+    console.log('checkname return: ',checkName)
+
     if(checkName){
-      window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      checkName.number = newNum
+      console.log('checkname update number: ',checkName.number)
+      window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      ? repositoryService
+      .update(checkName)
+      .then(response => {
+        setPersons(persons.map(persons => persons.id === checkName.id ? response.data : persons))
+      })
+      : window.alert("no")
     }
     else{
       repositoryService
