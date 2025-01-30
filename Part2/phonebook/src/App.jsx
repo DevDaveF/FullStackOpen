@@ -3,16 +3,18 @@ import PersonForm from './PersonForm'
 import Filter from './Filter'
 import AllPeople from './AllPeople'
 import repositoryService from './services/repository.js'
+import Notification from './Notification.jsx'
+import './index.css'
 
 const App = () => {
 
   const [persons, setPersons] = useState([]) 
-
   const [newName, setNewName] = useState('add a new person...')
-
   const [newNum, setNewNum] = useState('add a phone number...')
-
   const [nameFilter, setNameFilter] = useState('')
+  const [message, setMessage] = useState(null)
+  
+  let messageType = null
 
   useEffect(() => {
     repositoryService
@@ -37,14 +39,19 @@ const App = () => {
     if(checkName){
       checkName.number = newNum
       console.log('checkname update number: ',checkName.number)
-      window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
-      ? repositoryService
-      .update(checkName)
-      .then(response => {
-        setPersons(persons.map(persons => persons.id === checkName.id ? response.data : persons))
-      })
-      : window.alert("no")
-    }
+        if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+          repositoryService
+          .update(checkName)
+          .then(response => {
+            setPersons(persons.map(persons => persons.id === checkName.id ? response.data : persons))
+          })
+          setMessage(`Updated the number of ${checkName.name}`)
+          messageType = 0
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        }
+      }
     else{
       repositoryService
       .create(personObject)
@@ -54,6 +61,11 @@ const App = () => {
         setNewName('')
         setNewNum('')
       })
+      setMessage(`Added ${personObject.name} to the phonebook`)
+      messageType = 0
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
       
   }
@@ -73,11 +85,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+        <Notification message={message} type={messageType}/>
         <Filter value = {nameFilter} onChange = {handleFilter}/>
 
       <h2>add a new</h2>
-      
+    
         <PersonForm 
           onSubmit={addPerson} 
           value={newName} 

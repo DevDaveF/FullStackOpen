@@ -1,0 +1,29 @@
+h1 {
+    color: green;
+    font-style: italic;
+  }
+  
+  .confirm {
+    color: rgb(27, 135, 31);
+    font-size: 30px;
+    background: lightgrey;
+    font-weight: 100;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-width: 5px;
+  }
+  
+  
+  .error {
+    color: red;
+    font-size: 30px;
+    background: lightgrey;
+    font-weight: 100;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-width: 5px;
+  }
